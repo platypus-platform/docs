@@ -81,3 +81,19 @@ Principles
 * An agent that cannot converge should keep trying. It will be inferred by
   external monitors (not done yet).
 * Agents should do one thing well. Like unix.
+
+Bootstrapping
+-------------
+
+_Proposed_
+
+Use `pt-direct` during kickstart to deploy an artifact containing agents and
+any configuration specific to your deployment (such as location of
+servicebuilder config). The platform can then self-deploy, the only gnarly part
+being that `pt-setlive` will receive a `SIGTERM` half-way through deploying
+itself. One solution is if it detects it is self-restarting it forks, and the
+forked process can finish up the deploy then exit.
+
+Manual intervention is required if the forked process crashes during the
+upgrade, or potentially if a bad version of `pp-setlive` or `pp-preparer` is
+deployed.
